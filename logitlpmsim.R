@@ -41,10 +41,6 @@ for(i in 1:nreps){
   else cat(".")
 }
 
-z2<-runif(1000,-5,5)
-pr2 = 1/(1+exp(-z2))
-
-
 thecomp<-cbind(unlist(lapply(glms,function(x) BIC(x))),unlist(lapply(lms,function(x) BIC(x))),unlist(lapply(tots, function(x) x/10000)))
 thecomp<-as.matrix(thecomp)
 thecomp<-cbind(thecomp, (thecomp[,2]-thecomp[,1]))
@@ -61,10 +57,3 @@ thecomp2<-as.data.frame(thecomp2)
 
 p.2<-ggplot(thecomp2)
 p.2<-p.2+geom_point(aes(x=V3,y=V4),color="#CCCCCC")+geom_smooth(aes(x=V3,y=V4),color="#2671C4")+theme_bw()+xlab("Proportion Sample=1")+ylab("Delta PLM-Logit BIC")
-
-p2<-ggplot()
-p2<-p2+geom_smooth(aes(x=z2,y=pr2),color="#2671C4")+theme_bw()+xlab("x")+ylab("P(x)")+ggtitle("The Logit Curve")
-
-
-z2<-runif(1000,-5,5)
-pr2 = 1/(1+exp(-z2))
