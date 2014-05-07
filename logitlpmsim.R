@@ -1,4 +1,4 @@
-
+library('ggplot2')
 nreps=1000
 glms<-vector('list', length(nreps))
 lms<-vector('list', length(nreps))
