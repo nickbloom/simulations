@@ -1,0 +1,52 @@
+# Approximation of Population Probability Density Function
+## A Simulation Test
+
+As part of an assignment for my statistics class, I was attempting to use predicted probabilities from a logit model to approximate densities of the latent probability of a population to donate. I wanted to try 
+
+```{r}
+powers<-sample(2:5,10,replace=T)
+tens<-10^powers
+sampsize<-round(runif(5,0,1),2)
+
+for(i in tens){
+x<-rnorm(i)
+x1<-rnorm(i)
+x2<-rbinom(i,1,0.5)
+x3<-rbinom(i,1,0.5)
+x4<-rnorm(i)
+thedata<-matrix(cbind(x,x1,x2,x3,x4,x4,z,y))
+z<-sample(1:5,1)*x + sample(1:5,1)*x1 + sample(1:5,1)*x2 + sample(1:5,1)*x3 + sample(1:5,1)*x4 + rnorm(i)
+pr = 1/(1+exp(-z))
+y = rbinom(i,1,pr)
+
+samples<-lapply(sampsize, function(x) i*x)
+rows<-lapply(samples, function(x) sample(i,x,replace=F))
+samples<-lapply(rows,function(x) thedata[rownames(thedata) %in% x,])
+}
+
+port<-sample(rownames(mydata),806,replace=F)
+port<-mydata[rownames(mydata) %in% port,]
+fivehun<-sample(rownames(mydata),500,replace=F)
+fivehun<-mydata[rownames(mydata) %in% fivehun,]
+thou<-sample(rownames(mydata),1000,replace=F)
+thou<-mydata[rownames(mydata) %in% thou,]
+twothou<-sample(rownames(mydata),2000,replace=F)
+twothou<-mydata[rownames(mydata) %in% twothou,]
+
+portm<-glm(y ~ x1 + x3, family=binomial(link='logit'),data=port)
+fhm<-glm(y ~ x1 + x3, family=binomial(link='logit'),data=fivehun)
+tm<-glm(y ~ x1 + x3, family=binomial(link='logit'),data=thou)
+ttm<-glm(y ~ x1 + x3, family=binomial(link='logit'),data=twothou)
+
+hmfits<-hm$fitted
+fhmfits<-fhm$fitted
+tmfits<-tm$fitted
+ttmfits<-ttm$fitted
+portfits<-portm$fitted
+
+pp<-ggplot()+geom_density(aes(portm$fitted))+geom_density(aes(pr))
+
+hmp<-ggplot()
+hmp<-hmp+geom_density(aes(hmfits),color='red')+geom_density(aes(fhmfits),color='blue')+geom_density(aes(tmfits),color='green')+geom_density(aes(ttmfits),color='pink')+geom_density(aes(pr))+theme_bw()
+```
+
